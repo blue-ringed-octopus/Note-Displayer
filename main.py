@@ -9,6 +9,7 @@ import sounddevice as sd
 import numpy as np
 import matplotlib.pyplot as plt 
 import cv2
+import keyboard
 
 def closest_note(freq, notes):
     i=np.argmin(np.abs(freq-np.asarray(list(notes.values()))))
@@ -28,7 +29,7 @@ for i, note in enumerate(note_names):
     notes[note]=440*2**(i/12)
 
 
-
+staff=cv2.imread("staff.png")
 lambda_ = 44100
 T = 0.1
 duration=int(T*lambda_)
@@ -41,7 +42,7 @@ freq = lambda_/length* np.arange(0, length)
 length_max=int(max_freq*length/lambda_)
 freq = lambda_/length* np.arange(0, length_max)
 data=np.zeros(length)
-while True:
+while not keyboard.is_pressed("esc"):
     datum = sd.rec(duration, lambda_ , channels=1)
     sd.wait()
     datum=datum.flatten()
